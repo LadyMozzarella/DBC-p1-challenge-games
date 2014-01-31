@@ -27,7 +27,7 @@ The `source` folder of this repo includes 4 puzzle sets:
 
 - set-01_sample.unsolved
 - set-02_project_euler_50-easy-puzzles
-- set-02_project_euler_50-easy-puzzles
+- set-03_peter-norvig_95-hard-puzzles
 - set-04_peter-norvig_11-hardest-puzzles
 
 If you haven't yet tried your hand at the harder puzzles, run your solver against them to see what happens.
