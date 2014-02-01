@@ -25,7 +25,6 @@ class Tile
         possible != value
       }
     end
-    puts @possibles.inspect
   end
 end
 
@@ -46,16 +45,14 @@ class Board
       end
     end
   end
-  # def assign_boxes
 
-  # end
 
   def populate_tiles
     @board.each_with_index do |row, row_index|
       row.each_with_index do |this_tile, column_index|
         this_tile.row = row_index
         this_tile.column = column_index
-        p this_tile.box_number = (3 * (this_tile.row / 3)) + ((this_tile.column/3) +1)
+        this_tile.box_number = (3 * (this_tile.row / 3)) + ((this_tile.column/3) +1)
       end
     end
   end
@@ -67,6 +64,55 @@ class Board
       puts ""
     end
   end
+  def elimnate_row_possibles
+    @board.each do |row|
+      row_values = []
+      row.each do |tile|
+        row_values << tile.value.to_i
+      end
+      row.each do |tile|
+        tile.eliminate_possibles(row_values)
+      end
+    end
+  end
+
+  def elimnate_column_possibles
+    x=0
+    while x < 9
+      column_values = []
+      @board.each do |row|
+        column_values << row[x].value.to_i
+      end
+      @board.each do |row|
+        row[x].eliminate_possibles(column_values)
+      end
+      x+=1
+    end
+  end
+
+  def eliminate_box_possibles
+    box_values = [[],[],[],[],[],[],[],[]]
+    x = 0
+    while x <9
+      @board.each do |row|
+        row.each do |tile|
+          box_values[x] << tile.value.to_i if tile.box_number == x+1
+        end
+      end
+      @board.each do |row|
+        row.each do |tile|
+          tile.eliminate_possibles(box_values[x]) if tile.box_number == x+1
+        end
+      end
+      x += 1
+    end
+
+  end
+
+
+
+
+
 end
 
 
@@ -75,24 +121,34 @@ our_board = Board.new()
 our_board.set_up("619030040270061008000047621486302079000014580031009060005720806320106057160400030")
 our_board.create_tiles
 puts "Sudoku Board: "
-puts our_board.display
+our_board.display
 our_board.populate_tiles
 
 # print our_board.board[2][4].row
 # print our_board.board[2][4].column
 
-row_values = []
-our_board.board[0].each do |tile|
-  row_values << tile.value.to_i if tile.value != "0"
-end
-puts "Going to subtract: #{row_values}"
+# row_values = []
+# our_board.board[0].each do |tile|
+#   row_values << tile.value.to_i if tile.value != "0"
+# end
+# puts "Going to subtract: #{row_values}"
 
-column_values = []
-our_board.board.each do |row|
-  column_values << row[3].value.to_i if row[3].value != "0"
-end
-puts "Going to subtract: #{column_values}"
+# column_values = []
+# our_board.board.each do |row|
+#   column_values << row[3].value.to_i if row[3].value != "0"
+# end
+# puts "Going to subtract: #{column_values}"
 
 # puts our_board.board[2][3].possibles
 # our_board.board[2][3].eliminate_possibles(row_values)
 # our_board.board[2][3].eliminate_possibles(column_values)
+p our_board.board[2][2].possibles
+our_board.elimnate_row_possibles
+p our_board.board[2][2].possibles
+
+our_board.elimnate_column_possibles
+p our_board.board[2][2].possibles
+our_board.eliminate_box_possibles
+p our_board.board[2][2].possibles
+
+
