@@ -136,23 +136,26 @@ class Board
   end
 
   def solve!
+    p "Let's Sudoku this bitch!"
+    display
+    puts "---------"
     until solved?
       elimnate_row_possibles
-      p "Eliminating rows..."
-      sleep(1)
+      # p "Eliminating rows..."
+      #sleep(1)
       elimnate_column_possibles
-      p "Eliminating columns..."
-      sleep(1)
+      # p "Eliminating columns..."
+      #sleep(1)
       eliminate_box_possibles
-      p "Eliminating boxes..."
-      sleep(1)
+      # p "Eliminating boxes..."
+      #sleep(1)
       assign_values
-      p "Assigning values...Box is now:"
-      sleep(1)
-      display
+      # p "Assigning values...Box is now:"
+      #sleep(1)
     end
+    display
+    p "BAM."
   end
-
 
 end
 
@@ -166,6 +169,26 @@ our_board.display
 our_board.populate_tiles
 our_board.solve!
 
+
+our_board2 = Board.new()
+our_board2.set_up("005030081902850060600004050007402830349760005008300490150087002090000600026049503")
+our_board2.create_tiles
+puts "Sudoku Board: "
+our_board2.display
+our_board2.populate_tiles
+our_board2.solve!
+
+puzzles = File.readlines('source/set-01_sample.unsolved.txt')
+puzzles.each do |puzzle|
+  puzzle.chomp!
+  our_board3 = Board.new()
+  our_board3.set_up(puzzle)
+  our_board3.create_tiles
+  puts "Sudoku Board: "
+  our_board3.display
+  our_board3.populate_tiles
+  our_board3.solve!
+end
 
 
 
