@@ -7,7 +7,7 @@
 
 ##Summary
 
-By the end of the next two challenges you'll have a fully-functioning Sudoku solver that you can run from the command line.
+ the end of the next two challenges you'll have a fully-functioning Sudoku solver that you can run from the command line.
 
 [Sudoku](http://en.wikipedia.org/wiki/Sudoku) is a logic-based, combinatorial number-placement puzzle. The objective is to fill a 9×9 grid with digits so that each column, each row, and each of the nine 3×3 sub-grids that compose the grid (also called "boxes") contains all of the digits from 1 to 9.
 
