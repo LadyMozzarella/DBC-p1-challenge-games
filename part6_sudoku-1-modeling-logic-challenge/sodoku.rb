@@ -6,15 +6,15 @@ digits = Set.new [1,2,3,4,5,6,7,8,9]
 class Tile
   attr_accessor :value, :possibles, :row, :column, :box_number
   def initialize(value)
-    @possibles = pop_set(value)
+    @possibles = pop_set(value.to_i)
     @value = value
   end
 
   def pop_set(value)
-    if value == "0"
+    if value == 0
       set = Set.new [1,2,3,4,5,6,7,8,9]
     else
-      set = Set.new [value]
+      set = Set.new []
     end
     return set
   end
@@ -91,26 +91,67 @@ class Board
   end
 
   def eliminate_box_possibles
-    box_values = [[],[],[],[],[],[],[],[]]
+    box_values = [[],[],[],[],[],[],[],[],[]]
     x = 0
     while x <9
       @board.each do |row|
         row.each do |tile|
-          box_values[x] << tile.value.to_i if tile.box_number == x+1
-        end
-      end
-      @board.each do |row|
-        row.each do |tile|
-          tile.eliminate_possibles(box_values[x]) if tile.box_number == x+1
+          box_values[x] << tile.value.to_i if (tile.box_number == x+1 && tile.value.to_i !=0)
         end
       end
       x += 1
+
     end
 
+    @board.each do |row|
+      row.each do |tile|
+        tile.eliminate_possibles(box_values[tile.box_number-1])
+      end
+    end
   end
 
 
+  def assign_values
+    @board.each do |row|
+      row.each do |tile|
+        if tile.possibles.length == 1
+          tile.value = tile.possibles.to_a[0]
+          tile.possibles.delete(tile.value)
+        end
+      end
+    end
+  end
 
+  def whats_possible? (row, column)
+    return @board[row][column].possibles
+  end
+
+  def solved?
+    @board.each do |row|
+      row.each do |tile|
+        return false if tile.value == '0'
+      end
+    end
+    return true
+  end
+
+  def solve!
+    until solved?
+      elimnate_row_possibles
+      p "Eliminating rows..."
+      sleep(1)
+      elimnate_column_possibles
+      p "Eliminating columns..."
+      sleep(1)
+      eliminate_box_possibles
+      p "Eliminating boxes..."
+      sleep(1)
+      assign_values
+      p "Assigning values...Box is now:"
+      sleep(1)
+      display
+    end
+  end
 
 
 end
@@ -123,6 +164,41 @@ our_board.create_tiles
 puts "Sudoku Board: "
 our_board.display
 our_board.populate_tiles
+our_board.solve!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# p our_board.board[8][8].value
+
+# p our_board.board[2][2].possibles
+# p our_board.board[2][2].possibles
+
+# p our_board.board[2][2].possibles
+
+# p our_board.whats_possible?(8,8)
+
+# our_board.board.each do |row|
+#   row.each do |tile|
+#     p "I am Row[#{tile.row}][#{tile.column}] and I could be: ."
+#     p tile.possibles
+#   end
+# end
 
 # print our_board.board[2][4].row
 # print our_board.board[2][4].column
@@ -142,13 +218,3 @@ our_board.populate_tiles
 # puts our_board.board[2][3].possibles
 # our_board.board[2][3].eliminate_possibles(row_values)
 # our_board.board[2][3].eliminate_possibles(column_values)
-p our_board.board[2][2].possibles
-our_board.elimnate_row_possibles
-p our_board.board[2][2].possibles
-
-our_board.elimnate_column_possibles
-p our_board.board[2][2].possibles
-our_board.eliminate_box_possibles
-p our_board.board[2][2].possibles
-
-
