@@ -15,7 +15,6 @@ end
 
 # The file has newlines at the end of each line, so we call
 # String#chomp to remove them.
-board_string = File.readlines('sample.unsolved.txt').first.chomp
 
 game = Sudoku.new(board_string)
 
